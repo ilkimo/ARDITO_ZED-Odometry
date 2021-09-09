@@ -19,8 +19,8 @@ endif()
 SET(EXECUTABLE_OUTPUT_PATH ".")
 
 find_package(ZED 3 REQUIRED)
-find_package(GLUT REQUIRED)
-find_package(GLEW REQUIRED)
+#find_package(GLUT REQUIRED)
+#find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(CUDA ${ZED_CUDA_VERSION} EXACT REQUIRED)
 
@@ -30,14 +30,14 @@ IF(NOT WIN32)
 ENDIF()
  
 include_directories(${ZED_INCLUDE_DIRS})
-include_directories(${GLEW_INCLUDE_DIRS})
-include_directories(${GLUT_INCLUDE_PATH})
+#include_directories(${GLEW_INCLUDE_DIRS})
+#include_directories(${GLUT_INCLUDE_PATH})
 include_directories(${CUDA_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 link_directories(${ZED_LIBRARY_DIR})
-link_directories(${GLEW_LIBRARY_DIRS})
-link_directories(${GLUT_LIBRARY_DIRS})
+#link_directories(${GLEW_LIBRARY_DIRS})
+#link_directories(${GLUT_LIBRARY_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
 link_directories(${CUDA_LIBRARY_DIRS})
 
@@ -57,8 +57,9 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
                         ${SPECIAL_OS_LIBS} 
                         ${ZED_LIBS} 
                         ${OPENGL_LIBRARIES}
-                        ${GLUT_LIBRARY}
-                        ${GLEW_LIBRARIES})
+                        #${GLUT_LIBRARY}
+                        #${GLEW_LIBRARIES}
+                     )
 
 if(INSTALL_SAMPLES)
     LIST(APPEND SAMPLE_LIST ${PROJECT_NAME})

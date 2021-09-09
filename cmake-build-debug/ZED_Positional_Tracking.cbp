@@ -88,13 +88,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/il_kimo/Desktop/tutto/studio/diana/codice/tmp_ZED_odometry/include/GLViewer.hpp">
-			<Option target="ZED_Positional_Tracking"/>
-		</Unit>
 		<Unit filename="/home/il_kimo/Desktop/tutto/studio/diana/codice/tmp_ZED_odometry/include/ZEDModel.hpp">
-			<Option target="ZED_Positional_Tracking"/>
-		</Unit>
-		<Unit filename="/home/il_kimo/Desktop/tutto/studio/diana/codice/tmp_ZED_odometry/src/GLViewer.cpp">
 			<Option target="ZED_Positional_Tracking"/>
 		</Unit>
 		<Unit filename="/home/il_kimo/Desktop/tutto/studio/diana/codice/tmp_ZED_odometry/src/main.cpp">

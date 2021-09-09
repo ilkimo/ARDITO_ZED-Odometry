@@ -26,9 +26,6 @@
 // ZED includes
 #include <sl/Camera.hpp>
 
-// Sample includes
-#include "GLViewer.hpp"
-
 // Using std namespace
 using namespace std;
 using namespace sl;
@@ -55,18 +52,12 @@ int main(int argc, char **argv) {
     // Open the camera
     auto returned_state = zed.open(init_parameters);
     if (returned_state != ERROR_CODE::SUCCESS) {
-        print("Camera Open", returned_state, "Exit program.");
+        cout << "Camera open. returned state = " << returned_state << "Exit program." << endl;
+
         return EXIT_FAILURE;
     }
 
     auto camera_model = zed.getCameraInformation().camera_model;
-    GLViewer viewer;
-    // Initialize OpenGL viewer
-    viewer.init(argc, argv, camera_model);
-
-    // Create text for GUI
-    char text_rotation[MAX_CHAR];
-    char text_translation[MAX_CHAR];
 
     // Set parameters for Positional Tracking
     PositionalTrackingParameters positional_tracking_param;
@@ -74,7 +65,7 @@ int main(int argc, char **argv) {
     // enable Positional Tracking
     returned_state = zed.enablePositionalTracking(positional_tracking_param);
     if (returned_state != ERROR_CODE::SUCCESS) {
-        print("Enabling positionnal tracking failed: ", returned_state);
+        cout << "Enabling positional tracking failed: returned state = " << returned_state << endl;
         zed.close();
         return EXIT_FAILURE;
     }
@@ -85,7 +76,7 @@ int main(int argc, char **argv) {
     SensorsData sensors_data;
 #endif
     
-    while (viewer.isAvailable()) {
+    while(1) {
         if (zed.grab() == ERROR_CODE::SUCCESS) {
             // Get the position of the camera in a fixed reference frame (the World Frame)
             tracking_state = zed.getPosition(camera_path, REFERENCE_FRAME::WORLD);
@@ -98,15 +89,9 @@ int main(int argc, char **argv) {
 
 #else
             if (tracking_state == POSITIONAL_TRACKING_STATE::OK) {
-                // Get rotation and translation and displays it
-                setTxt(camera_path.getEulerAngles(), text_rotation);
-                setTxt(camera_path.getTranslation(), text_translation);
 
                 cout << "POSITION x=" << camera_path.getTranslation().x << ", " << "y=" << camera_path.getTranslation().y << ", " << "z=" << camera_path.getTranslation().z << " ORIENTATION x=" << camera_path.getEulerAngles().x << ", y=" << camera_path.getEulerAngles().y << ", z=" << camera_path.getEulerAngles().z << endl; //TODO CANCEL ME
             }
-
-            // Update rotation, translation and tracking state values in the OpenGL window
-            viewer.updateData(camera_path.pose_data, string(text_translation), string(text_rotation), tracking_state);
 #endif
 
         } else

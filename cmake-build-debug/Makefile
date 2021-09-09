@@ -130,21 +130,6 @@ ZED_Positional_Tracking/fast:
 .PHONY : ZED_Positional_Tracking/fast
 
 # target to build an object file
-src/GLViewer.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZED_Positional_Tracking.dir/build.make CMakeFiles/ZED_Positional_Tracking.dir/src/GLViewer.o
-.PHONY : src/GLViewer.o
-
-# target to preprocess a source file
-src/GLViewer.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZED_Positional_Tracking.dir/build.make CMakeFiles/ZED_Positional_Tracking.dir/src/GLViewer.i
-.PHONY : src/GLViewer.i
-
-# target to generate assembly for a file
-src/GLViewer.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZED_Positional_Tracking.dir/build.make CMakeFiles/ZED_Positional_Tracking.dir/src/GLViewer.s
-.PHONY : src/GLViewer.s
-
-# target to build an object file
 src/main.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZED_Positional_Tracking.dir/build.make CMakeFiles/ZED_Positional_Tracking.dir/src/main.o
 .PHONY : src/main.o
@@ -168,9 +153,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ZED_Positional_Tracking"
-	@echo "... src/GLViewer.o"
-	@echo "... src/GLViewer.i"
-	@echo "... src/GLViewer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
