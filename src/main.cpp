@@ -25,12 +25,17 @@
 
 // ZED includes
 #include <sl/Camera.hpp>
+#include <Property.hpp>
+#include <MqttManager.hpp>
 
 // Using std namespace
 using namespace std;
 using namespace sl;
 
 #define IMU_ONLY 0
+#define ZED_ODOMETRY_TOPIC "ADT/AutoPilot/Odometry"
+#define SLEEPING_TIME_MS 24
+
 const int MAX_CHAR = 128;
 
 inline void setTxt(sl::float3 value, char* ptr_txt) {
@@ -75,7 +80,14 @@ int main(int argc, char **argv) {
 #if IMU_ONLY
     SensorsData sensors_data;
 #endif
-    
+
+    MqttManager::init("jaa");
+    sleep(1);
+
+    Property<vector<double>> zed_odometry_property =
+            Property<vector<double>>(ZED_ODOMETRY_TOPIC,
+                                     Property<vector<double>>::propertyAccessType::W,
+                                     true);
     while(1) {
         if (zed.grab() == ERROR_CODE::SUCCESS) {
             // Get the position of the camera in a fixed reference frame (the World Frame)
@@ -88,15 +100,30 @@ int main(int argc, char **argv) {
             }
 
 #else
-            if (tracking_state == POSITIONAL_TRACKING_STATE::OK) {
 
+            if (tracking_state == POSITIONAL_TRACKING_STATE::OK) {
+                vector<double> vec = vector<double>();
+
+                vec.push_back(camera_path.getTranslation().x);
+                vec.push_back(camera_path.getTranslation().y);
+                vec.push_back(camera_path.getTranslation().z);
+                vec.push_back(camera_path.getEulerAngles().x);
+                vec.push_back(camera_path.getEulerAngles().y);
+                vec.push_back(camera_path.getEulerAngles().z);
+
+                zed_odometry_property.setValue(vec);
                 cout << "POSITION x=" << camera_path.getTranslation().x << ", " << "y=" << camera_path.getTranslation().y << ", " << "z=" << camera_path.getTranslation().z << " ORIENTATION x=" << camera_path.getEulerAngles().x << ", y=" << camera_path.getEulerAngles().y << ", z=" << camera_path.getEulerAngles().z << endl; //TODO CANCEL ME
+
+                vec.clear();
             }
 #endif
 
+            sleep_ms(SLEEPING_TIME_MS);
         } else
             sleep_ms(1);
     }
+
+    MqttManager::cleanup(); //TODO SE ESPLODE TUTTO, QUESTO E' IL PROBLEMA (vale anche per il culo di Mia Khalifa)
 
     zed.disablePositionalTracking();
 
